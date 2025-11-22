@@ -3,12 +3,16 @@ import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 
-// Check if the env variable exists (Render)
-const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
-  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-  : require("./firebase-service-account.json"); // local fallback
+let serviceAccount;
 
-// Initialize Firebase Admin
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  // Running on Render: read from env variable
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} else {
+  // Running locally: read from file
+  serviceAccount = require("./firebase-service-account.json");
+}
+
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
