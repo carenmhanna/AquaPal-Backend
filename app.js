@@ -28,6 +28,16 @@ app.use("/api/activities", activityRoutes);
 app.use("/api/activity-options", activityOptionRoutes);
 app.use("/api/achievements", achievementRoutes);
 
+// ✅ Test route to check backend, MongoDB, and Firebase
+app.get("/test", (req, res) => {
+  res.json({
+    message: "🚀 Backend is working perfectly!",
+    firebase: "✅ Firebase initialized",
+    mongoDB: "✅ MongoDB connected"
+  });
+});
+
+
 // Health / root
 app.get("/", (req, res) => res.send("API running..."));
 
@@ -42,19 +52,5 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message || "Server Error" });
 });
 
-
-
-
-app.get("/test", async (req, res) => {
-  try {
-    res.status(200).json({
-      message: "🚀 Backend is working perfectly!",
-      firebase: "✅ Firebase initialized",
-      mongoDB: "✅ MongoDB connected",
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 export default app;
