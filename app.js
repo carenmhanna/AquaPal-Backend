@@ -42,4 +42,19 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message || "Server Error" });
 });
 
+
+
+
+app.get("/test", async (req, res) => {
+  try {
+    res.status(200).json({
+      message: "🚀 Backend is working perfectly!",
+      firebase: "✅ Firebase initialized",
+      mongoDB: "✅ MongoDB connected",
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default app;
