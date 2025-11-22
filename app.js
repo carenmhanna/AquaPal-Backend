@@ -28,14 +28,6 @@ app.use("/api/activities", activityRoutes);
 app.use("/api/activity-options", activityOptionRoutes);
 app.use("/api/achievements", achievementRoutes);
 
-// ✅ Test route to check backend, MongoDB, and Firebase
-app.get("/test", (req, res) => {
-  res.json({
-    message: "🚀 Backend is working perfectly!",
-    firebase: "✅ Firebase initialized",
-    mongoDB: "✅ MongoDB connected"
-  });
-});
 
 
 // Health / root
