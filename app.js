@@ -3,11 +3,17 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import path from "path";                 // ⬅️ ADD
+import { fileURLToPath } from "url";     // ⬅️ ADD
+
 import userRoutes from "./routes/userRoutes.js";
 import waterUsageRoutes from "./routes/waterUsageRoutes.js";
 import activityRoutes from "./routes/activityRoutes.js";
 import activityOptionRoutes from "./routes/activityOptionRoutes.js";
 import achievementRoutes from "./routes/achievementRoutes.js";
+
+const __filename = fileURLToPath(import.meta.url); // ⬅️ ADD
+const __dirname = path.dirname(__filename);       // ⬅️ ADD
 
 const app = express();
 
@@ -20,6 +26,8 @@ app.use(cors({
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+// ⬅️ SERVE APK
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use("/api/users", userRoutes);
@@ -27,6 +35,14 @@ app.use("/api/logs", waterUsageRoutes);
 app.use("/api/activities", activityRoutes);
 app.use("/api/activity-options", activityOptionRoutes);
 app.use("/api/achievements", achievementRoutes);
+
+// ⬅️ ADD THIS
+app.get("/dl", (req, res) => {
+  res.redirect(
+    "https://aquapal-backend.onrender.com/public/AquaPal.apk"
+  );
+});
+
 
 
 
