@@ -22,22 +22,26 @@ app.use(express.json());
 app.use(helmet());
 // CORS setup
 const allowedOrigins = [
-  "https://aquapal-lilac.vercel.app", // Vercel frontend
+  "https://aquapal-lilac.vercel.app", // Vercel production frontend
   "http://localhost:3000"             // local dev frontend
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like Postman or mobile apps)
+    // Allow requests with no origin (mobile apps, Postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `CORS policy: This origin (${origin}) is not allowed.`;
-      return callback(new Error(msg), false);
+
+    // Allow if origin is in allowed list
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
-    return callback(null, true);
+
+    // Otherwise, block
+    return callback(new Error(`CORS policy: This origin (${origin}) is not allowed.`));
   },
   credentials: true
 }));
+
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
